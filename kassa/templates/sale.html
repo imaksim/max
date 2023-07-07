@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block title %}
+Новая продажа
+{% endblock %}
+{% block content %}
+<form method="POST" action="{% url 'add_sale' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+	{{ formset.management_form }}
+    <div id="form-set">
+        {% for form in formset %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-form">+</button>
+    <button type="submit">Submit</button>
+</form>
+
+
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<h1>
+					Новая продажа
+				</h1>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+
+			<button type="button" class="btn btn-block btn-outline-success">
+				Сохранить
+			</button>
+		</div>
+		<div class="col-md-3">
+		</div>
+		<div class="col-md-3">
+		</div>
+		<div class="col-md-3">
+
+			<button type="button" class="btn btn-block btn-outline-danger">
+				Закрыть
+			</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-1">
+			<h3>
+				151
+			</h3>
+		</div>
+		<div class="col-md-3">
+			07.12.2018 12:00:00
+		</div>
+		<div class="col-md-3">
+			Мария  Петрова
+		</div>
+		<div class="col-md-2">
+			20000 руб
+		</div>
+		<div class="col-md-3">
+			Терминал магазина
+		</div>
+	</div>
+	<div class="col-md-12 p-2 bg-light border">
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table table-bordered table-hover table-sm">
+				<thead>
+					<tr>
+						<th>
+							#
+						</th>
+						<th>
+							Наименование операции
+						</th>
+						<th>
+							Количество
+						</th>
+						<th>
+							Стоимость
+						</th>
+						<th>
+							Сумма
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							1
+						</td>
+						<td>
+							Роза 70 см
+						</td>
+						<td>
+							2
+						</td>
+						<td>
+							100
+						</td>
+						<td>
+							200
+						</td>
+					</tr>
+					<tr class="table-active">
+						<<td>
+							2
+						</td>
+						<td>
+							Роза 50 см
+						</td>
+						<td>
+							3
+						</td>
+						<td>
+							100
+						</td>
+						<td>
+							300
+						</td>
+					</tr>
+					<tr>
+						<td>
+							3
+						</td>
+						<td>
+							Выдача наличных
+						</td>
+						<td>
+							1
+						</td>
+						<td>
+							300
+						</td>
+						<td>
+							- 300
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="row">
+				<div class="col-md-12">
+				</div>
+			</div>
+					Description list
+					Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
+
+		</div>
+	</div>
+</div>
+<script>
+jQuery(document).ready(function($) {
+$(document).ready(function() {
+    var totalForms = parseInt($('#id_form-TOTAL_FORMS').val());
+    var maxForms = parseInt($('#id_form-MAX_NUM_FORMS').val());
+    var addButton = $('#add-form');
+
+    function checkTotalForms() {
+        if (totalForms >= maxForms) {
+            addButton.prop('disabled', true);
+        } else {
+            addButton.prop('disabled', false);
+        }
+    }
+
+    checkTotalForms();
+
+    addButton.click(function() {
+        var newForm = $($('.form-group')[0]).clone(true);
+        newForm.find(':input').each(function() {
+            var name = $(this).attr('name').replace('-0-', '-' + totalForms + '-');
+            var id = 'id_' + name;
+            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+        });
+        newForm.find('label').each(function() {
+            var newFor = $(this).attr('for').replace('-0-', '-' + totalForms + '-');
+            $(this).attr('for', newFor);
+        });
+        newForm.insertBefore(addButton);
+        totalForms++;
+        $('#id_form-TOTAL_FORMS').val(totalForms);
+        checkTotalForms();
+    });
+});
+});
+</script>
+{% endblock content %}
+```

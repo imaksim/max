@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}
+Продажи
+{% endblock %}
+{% block content %}
+
+<h2>Изменить имя  операции</h2>
+<table class="table">
+
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Дата</th>
+            <th scope="col">Кассир</th>
+            <th scope="col">Наименование  операции</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Стоимость</th>
+            <th scope="col">Описание</th>
+            <th scope="col">Метод оплаты</th>
+
+        </tr>
+        </thead>
+        <tbody>
+{% for sale in sales%}
+        <tr>
+            <th scope="row">{{sale.id}}</th>
+            <td>{{ sale.date }}</td>
+            <td>{{ sale.user.username }}</td>
+            <td>{{ sale.operation.operation_name.name  }}</td>
+            <td>{{ sale.operation.amount  }}</td>
+            <td>{{ sale.total }}</td>
+            <td>{{ sale.notice }}</td>
+            <td>{{ sale.payment.name }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

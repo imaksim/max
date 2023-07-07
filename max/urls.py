@@ -16,13 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from kassa.views import operation_list
-from kassa.views import OperationNameDeleteView, OperationNameUpdateView
+from kassa import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('operations/', operation_list, name='operation_list'),
-    path('operations/<int:pk>/delete/', OperationNameDeleteView.as_view(), name='operation_delete'),
-    path('operations/<int:pk>/update/', OperationNameUpdateView.as_view(), name='operation_update'),
+    path('operations/', views.operation_name_list, name='operation_list'),
+    path('operations/delete/', views.delete_operation_name, name='operation_delete'),
+    path('operations/update/<int:pk>/', views.edit_operation_name, name='operation_edite'),
+    path('operations/add', views.add_operation_name, name='operation_add'),
+    path('sales/', views.sale_list, name='sale_list'),
+    path('sale/', views.sale, name='sale'),
+    path('sale/add', views.add_sale, name='add_sale'),
 
 ]
