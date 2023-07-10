@@ -3,7 +3,21 @@
 Новая продажа
 {% endblock %}
 {% block content %}
+<form method="POST" action="{% url 'add_sale' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
 
+	{{ formset.management_form }}
+    <div id="form-set">
+        {% for form in formset %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-form">+</button>
+    <button type="submit">Submit</button>
+</form>
 
 
 
@@ -12,7 +26,7 @@
 		<div class="col-md-12">
 			<div class="page-header">
 				<h1>
-				Продажа № {{sale.id}} от {{sale.date}}
+					Новая продажа
 				</h1>
 			</div>
 		</div>
@@ -43,19 +57,20 @@
 	<div class="row">
 		<div class="col-md-1">
 			<h3>
-
+				151
 			</h3>
 		</div>
 		<div class="col-md-3">
+			07.12.2018 12:00:00
 		</div>
 		<div class="col-md-3">
-			<h4>{{ sale.user.username }}</h4>
+			Мария  Петрова
 		</div>
 		<div class="col-md-2">
 			20000 руб
 		</div>
 		<div class="col-md-3">
-			{{ sale.payment }}
+			Терминал магазина
 		</div>
 	</div>
 	<div class="col-md-12 p-2 bg-light border">
@@ -83,29 +98,57 @@
 					</tr>
 				</thead>
 				<tbody>
-				<tr>{{ sale.operation.all }}</tr>
-				{% for operation in sale.operation_set.all %}
 					<tr>
 						<td>
-							  {{ operation.id }}
-							 </td>
-							 <td>
-							  {{ operation.operation_name.name }}
-							 </td>
-							 <td>
-							  {{ operation.amount }}
-							 </td>
-							 <td>
-							  {{ operation.price }}
-							 </td>
-
+							1
+						</td>
+						<td>
+							Роза 70 см
+						</td>
+						<td>
+							2
+						</td>
+						<td>
+							100
+						</td>
 						<td>
 							200
 						</td>
 					</tr>
-
-					{% endfor %}
-
+					<tr class="table-active">
+						<<td>
+							2
+						</td>
+						<td>
+							Роза 50 см
+						</td>
+						<td>
+							3
+						</td>
+						<td>
+							100
+						</td>
+						<td>
+							300
+						</td>
+					</tr>
+					<tr>
+						<td>
+							3
+						</td>
+						<td>
+							Выдача наличных
+						</td>
+						<td>
+							1
+						</td>
+						<td>
+							300
+						</td>
+						<td>
+							- 300
+						</td>
+					</tr>
 				</tbody>
 			</table>
 			<div class="row">

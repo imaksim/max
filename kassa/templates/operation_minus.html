@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}
+Операции
+{% endblock %}
+{% block content %}
+<h1>Список имен операций</h1>
+
+<form method="post" action="{% url 'operation_minus_delete' %}">
+{% csrf_token %}
+    <table class="table">
+
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Имя операции</th>
+        </tr>
+        </thead>
+        <tbody>
+{% for operation_minus in operations_minus%}
+        <tr>
+            <th scope="row">{{operation_minus.id}}</th>
+            <td><a href="{% url 'operation_minus_edite' operation_minus.id %}">{{operation_minus.name}}</a></td>
+            <td><input type="checkbox" name="selected_item" value="{{ operation_minus.id }}"></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button  type="submit" name="delete_selected">Удалить выбранное</button>
+</form>
+<br>
+<h2>Добавить операцию</h2>
+<form method="post" action="{% url 'operation_minus_add' %}">
+
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Имя операции" required>
+<!--            <input type="submit" value="Save">-->
+    <button  type="submit" name="add_item">Добавить</button>
+</form>
+{{ my_value }}
+{% endblock %}

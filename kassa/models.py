@@ -6,7 +6,12 @@ from django.core import validators
 from django.conf import settings
 
 
-
+class OperationNameMinus(models.Model):
+    name = models.CharField(max_length=255)
+    class Meta:
+        db_table = "operation_name_minus"
+    def __str__(self):
+         return f"{self.name}"
 class OperationName(models.Model):
     name = models.CharField(max_length=255)
 
@@ -25,7 +30,6 @@ class PaymentMethods(models.Model):
          return f"{self.name}"
 class Operations(models.Model):
     operation_name = models.ForeignKey(OperationName, on_delete=models.PROTECT, null=True)
-    deb_cred = models.BooleanField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     amount = models.IntegerField(validators=[validators.MinValueValidator(0)])
     def __str__(self):

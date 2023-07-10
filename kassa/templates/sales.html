@@ -4,7 +4,62 @@
 {% endblock %}
 {% block content %}
 
-<h2>Изменить имя  операции</h2>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-2">
+			<h4>
+				Наличные: 100 руб
+			</h4>
+		</div>
+		<div class="col-md-2">
+			<h4>
+				Терминал:  100 руб
+			</h4>
+		</div>
+		<div class="col-md-2">
+			<h4>
+				Сайт: 100 руб
+			</h4>
+		</div>
+		<div class="col-md-2">
+			<h4>
+				Перевод  на  карту: 100 руб
+			</h4>
+		</div>
+		<div class="col-md-4">
+					<form class="form-inline">
+						<input class="form-control mr-sm-3" type="text" />
+						<button class="btn btn-primary my-3 my-sm-0" type="submit">
+							Поиск
+						</button>
+					</form>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-4">
+
+					<a href="{% url 'sale' %}"><button type="button" class="btn btn-success btn-block">
+						Продажа
+					</button></a>
+				</div>
+				<div class="col-md-4">
+
+					<button type="button" class="btn btn-danger btn-block">
+						Расход
+					</button>
+				</div>
+				<div class="col-md-4">
+					<h3>
+						Выбор  даты
+					</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <table class="table">
 
         <thead>
@@ -22,16 +77,18 @@
         </thead>
         <tbody>
 {% for sale in sales%}
-        <tr>
-            <th scope="row">{{sale.id}}</th>
-            <td>{{ sale.date }}</td>
-            <td>{{ sale.user.username }}</td>
-            <td>{{ sale.operation.operation_name.name  }}</td>
-            <td>{{ sale.operation.amount  }}</td>
-            <td>{{ sale.total }}</td>
-            <td>{{ sale.notice }}</td>
-            <td>{{ sale.payment.name }}</td>
-        </tr>
+
+				<tr>
+					<th scope="row">{{sale.id}}</th>
+					<td><a href="{% url 'view_sale' pk=sale.pk %}">{{ sale.date }}</a></td>
+					<td>{{ sale.user.username }}</td>
+					<td>{{ sale.operation.operation_name.name  }}</td>
+					<td>{{ sale.operation.amount  }}</td>
+					<td>{{ sale.total }}</td>
+					<td>{{ sale.notice }}</td>
+					<td>{{ sale.payment.name }}</td>
+				</tr>
+
         {% endfor %}
         </tbody>
     </table>

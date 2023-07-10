@@ -6,6 +6,11 @@ class OperationNameForm(forms.ModelForm):
         model = OperationName
         fields = ['name']
 
+class OperationNameMinusForm(forms.ModelForm):
+    name = forms.CharField(label="Имя")
+    class Meta:
+        model = OperationNameMinus
+        fields = ['name']
 class SaleForm(forms.ModelForm):
     class Meta:
         model = Sales
@@ -13,6 +18,6 @@ class SaleForm(forms.ModelForm):
 class OperationForm(forms.ModelForm):
     class Meta:
         model = Operations
-        fields = ['operation_name', 'deb_cred', 'price', 'amount']
+        fields = ['operation_name', 'price', 'amount']
 
 OperationFormSet = forms.modelformset_factory(Operations, form=OperationForm, extra=1)

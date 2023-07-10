@@ -2,13 +2,43 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView, CreateView
 from django.views.generic.list import ListView
-from .models import OperationName, Sales, Operations
-from .forms import OperationNameForm, SaleForm, OperationFormSet
+from .models import OperationName, Sales, Operations, OperationNameMinus
+from .forms import OperationNameForm, SaleForm, OperationFormSet, OperationNameMinusForm
 
 
 # Create your views here.
+def operation_name_minus_list(request):
+    operations_minus = OperationNameMinus.objects.all()
+    my_value = request.session.get('form_data', '')
+    return render(request, 'operation_minus.html', {'operations_minus': operations_minus, 'my_value': my_value})
 
+def add_operation_name_minus(request):
+    if request.method == 'POST':
+        form = OperationNameMinusForm(request.POST)
+        if form.is_valid():
+            form.save()
+            request.session['form_data'] = ''
+            return redirect('operation_minus_list')
+        else:
+            request.session['form_data'] = form.errors['name'][0]
+            return redirect('operation_minus_list')
 
+def edit_operation_name_minus(request, pk):
+    operation_minus = get_object_or_404(OperationNameMinus, pk=pk)
+    if request.method == 'POST':
+        form = OperationNameForm(request.POST, instance=operation_minus)
+        if form.is_valid():
+            form.save()
+            return redirect('operation_minus_list')
+    else:
+        form = OperationNameMinusForm(instance=operation_minus)
+    return render(request, 'edit_operation_name_minus.html', {'form': form, 'operation_minus': operation_minus})
+def delete_operation_name_minus(request):
+    if request.method == 'POST':
+        operation_name_minus_ids = request.POST.getlist('selected_item')
+        OperationNameMinus.objects.filter(id__in=operation_name_minus_ids).delete()
+    return redirect('operation_minus_list')
+############################################################################################################
 def operation_name_list(request):
     operations = OperationName.objects.all()
     my_value = request.session.get('form_data', '')
@@ -40,25 +70,24 @@ def delete_operation_name(request):
         operation_name_ids = request.POST.getlist('selected_item')
         OperationName.objects.filter(id__in=operation_name_ids).delete()
     return redirect('operation_list')
-def add_sale(request):
-    if request.method == 'POST':
-        form=SaleForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('sale_list')
-        else:
-            request.session['form_data'] = form.errors
-            return redirect('sale_list')
+
 def sale_list(request):
     sales = Sales.objects.all()
     return render(request, 'sales.html', {'sales': sales})
-def sale(request):
-    form = SaleForm()
-    formset  = OperationFormSet(queryset=Operations.objects.none())
-    context = {'form': form, 'sale': '', 'formset': formset}
-    return render(request, 'sale.html', context)
+def sale(request, pk):
+    sale = get_object_or_404(Sales, pk=pk)
+    sales=Sales.objects.all()
+    # form = SaleForm()
+    # formset  = OperationFormSet(queryset=Operations.objects.none())
+    # context = {'form': form, 'sale': '', 'formset': formset}
+    return render(request, 'sale.html', {'sale': sale})
 
 def add_sale(request):
+    if request.method == 'GET':
+        form = SaleForm()
+        formset  = OperationFormSet(queryset=Operations.objects.none())
+        context = {'form': form, 'sale': '', 'formset': formset}
+        return render(request, 'add_sale.html', context)
     if request.method == 'POST':
         form = SaleForm(request.POST)
         formset = OperationFormSet(request.POST)
@@ -69,4 +98,6 @@ def add_sale(request):
                 operation.sale = sale
                 operation.save()
             return redirect('sale_list')
-
+        else:
+            request.session['form_data'] = form.errors
+            return redirect('sale_list')
