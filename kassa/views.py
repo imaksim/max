@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView, CreateView
 from django.views.generic.list import ListView
-from .models import OperationName, Sales, Operations, OperationNameMinus
-from .forms import OperationNameForm, SaleForm, OperationFormSet, OperationNameMinusForm
+from .models import OperationName, Sales, OperationNameMinus
+from .forms import OperationNameForm, SaleForm, OperationNameMinusForm
 
 
 # Create your views here.
@@ -85,18 +85,19 @@ def sale(request, pk):
 def add_sale(request):
     if request.method == 'GET':
         form = SaleForm()
-        formset  = OperationFormSet(queryset=Operations.objects.none())
-        context = {'form': form, 'sale': '', 'formset': formset}
+        # formset  = OperationFormSet(queryset=Operations.objects.none())
+        context = {'form': form, 'sale': ''}
         return render(request, 'add_sale.html', context)
     if request.method == 'POST':
         form = SaleForm(request.POST)
-        formset = OperationFormSet(request.POST)
-        if form.is_valid() and formset.is_valid():
-            sale = form.save()
-            operations = formset.save(commit=False)
-            for operation in operations:
-                operation.sale = sale
-                operation.save()
+        # formset = OperationFormSet(request.POST)
+        if form.is_valid():
+        # and formset.is_valid():
+            form.save()
+            # operations = formset.save(commit=False)
+            # for operation in operations:
+            #     operation.save()  # Save each operation first
+            # sale.operation.add(*operations)  # Then, add them to the sale
             return redirect('sale_list')
         else:
             request.session['form_data'] = form.errors

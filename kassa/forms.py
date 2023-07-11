@@ -14,10 +14,10 @@ class OperationNameMinusForm(forms.ModelForm):
 class SaleForm(forms.ModelForm):
     class Meta:
         model = Sales
-        fields = ['payment', 'notice', 'total']
-class OperationForm(forms.ModelForm):
-    class Meta:
-        model = Operations
-        fields = ['operation_name', 'price', 'amount']
+        fields = ['payment', 'notice', 'total', 'operation_name', 'amount', 'price']
+# class OperationForm(forms.ModelForm):
+#     class Meta:
+#         model = Operations
+#         fields = ['operation_name', 'price', 'amount']
 
-OperationFormSet = forms.modelformset_factory(Operations, form=OperationForm, extra=1)
+# OperationFormSet = forms.modelformset_factory(Operations, form=OperationForm, extra=1)

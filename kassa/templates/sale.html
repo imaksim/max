@@ -52,7 +52,7 @@
 			<h4>{{ sale.user.username }}</h4>
 		</div>
 		<div class="col-md-2">
-			20000 руб
+			{{ sale.total }}
 		</div>
 		<div class="col-md-3">
 			{{ sale.payment }}
@@ -84,7 +84,7 @@
 				</thead>
 				<tbody>
 				<tr>{{ sale.operation.all }}</tr>
-				{% for operation in sale.operation_set.all %}
+				{% for operation in sale.operation.all %}
 					<tr>
 						<td>
 							  {{ operation.id }}

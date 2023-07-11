@@ -28,19 +28,22 @@ class PaymentMethods(models.Model):
         db_table = "payment_methods"
     def __str__(self):
          return f"{self.name}"
-class Operations(models.Model):
+# class Operations(models.Model):
+#     operation_name = models.ForeignKey(OperationName, on_delete=models.PROTECT, null=True)
+#     price = models.DecimalField(max_digits=8, decimal_places=2)
+#     amount = models.IntegerField(validators=[validators.MinValueValidator(0)])
+#     def __str__(self):
+#          return f"{self.operation_name}"
+
+
+    # class Meta:
+    #     db_table = "operations"
+
+class Sales(models.Model):
     operation_name = models.ForeignKey(OperationName, on_delete=models.PROTECT, null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     amount = models.IntegerField(validators=[validators.MinValueValidator(0)])
-    def __str__(self):
-         return f"{self.operation_name}"
-
-
-    class Meta:
-        db_table = "operations"
-
-class Sales(models.Model):
-    operation = models.ForeignKey(Operations, on_delete=models.PROTECT, null=True)
+    # operation = models.ManyToManyField(Operations, blank=False)
     date = models.DateTimeField(auto_now_add=True,)
     update_date = models.DateTimeField(auto_now_add=True,)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True)

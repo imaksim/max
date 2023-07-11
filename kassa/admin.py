@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import OperationName, OperationNameMinus, PaymentMethods, Operations, Sales
+from .models import OperationName, OperationNameMinus, PaymentMethods, Sales
 
 
 class OperationNameAdmin(admin.ModelAdmin):
@@ -10,5 +10,4 @@ class OperationNameAdmin(admin.ModelAdmin):
 admin.site.register(OperationName, OperationNameAdmin)
 admin.site.register(OperationNameMinus)
 admin.site.register(PaymentMethods)
-admin.site.register(Operations)
 admin.site.register(Sales)
