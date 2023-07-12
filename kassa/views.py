@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView, CreateView
 from django.views.generic.list import ListView
-from .models import OperationName, Sales, OperationNameMinus
-from .forms import OperationNameForm, SaleForm, OperationNameMinusForm
+from .models import OperationName, Sale, OperationNameMinus, Operation
+from .forms import OperationNameForm, SaleForm, OperationNameMinusForm, OperationFormSet
 
 
 # Create your views here.
@@ -72,11 +72,11 @@ def delete_operation_name(request):
     return redirect('operation_list')
 
 def sale_list(request):
-    sales = Sales.objects.all()
+    sales = Sale.objects.all()
     return render(request, 'sales.html', {'sales': sales})
 def sale(request, pk):
-    sale = get_object_or_404(Sales, pk=pk)
-    sales=Sales.objects.all()
+    sale = get_object_or_404(Sale, pk=pk)
+    # sale=Sale.objects.all()
     # form = SaleForm()
     # formset  = OperationFormSet(queryset=Operations.objects.none())
     # context = {'form': form, 'sale': '', 'formset': formset}
@@ -85,19 +85,18 @@ def sale(request, pk):
 def add_sale(request):
     if request.method == 'GET':
         form = SaleForm()
-        # formset  = OperationFormSet(queryset=Operations.objects.none())
-        context = {'form': form, 'sale': ''}
+        formset  = OperationFormSet(queryset=Operation.objects.none())
+        context = {'form': form, 'sale': '', 'formset': formset}
         return render(request, 'add_sale.html', context)
     if request.method == 'POST':
         form = SaleForm(request.POST)
-        # formset = OperationFormSet(request.POST)
-        if form.is_valid():
-        # and formset.is_valid():
-            form.save()
-            # operations = formset.save(commit=False)
-            # for operation in operations:
-            #     operation.save()  # Save each operation first
-            # sale.operation.add(*operations)  # Then, add them to the sale
+        formset = OperationFormSet(request.POST)
+        if form.is_valid() and formset.is_valid():
+            new_sale = form.save()
+            operations = formset.save(commit=False)
+            for operation in operations:
+                operation.sale = new_sale  # set the sale before saving
+                operation.save()  # Save each operation first
             return redirect('sale_list')
         else:
             request.session['form_data'] = form.errors

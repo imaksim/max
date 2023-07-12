@@ -5,6 +5,14 @@
 {% block content %}
 
 <div class="container-fluid">
+	<h3>Калькулятор</h3>
+<input type="text" id="expression" placeholder="Пример:100*2">
+<button class="btn btn-success btn-block" onclick="calculate()">Рассчитать</button>
+
+<h4>История:</h4>
+<ol id="history" onclick="editCalculation(event)"></ol>
+<h4>Итого: <span id="totalSum"></span> Руб.</h4>
+<button onclick="resetHistory()">Сброс</button>
 	<div class="row">
 		<div class="col-md-2">
 			<h4>
@@ -92,7 +100,6 @@
         {% endfor %}
         </tbody>
     </table>
-
 
 
 {% endblock %}
