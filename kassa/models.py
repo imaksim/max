@@ -6,14 +6,19 @@ from django.core import validators
 from django.conf import settings
 
 
-class OperationNameMinus(models.Model):
-    name = models.CharField(max_length=255)
-    class Meta:
-        db_table = "operation_name_minus"
-    def __str__(self):
-         return f"{self.name}"
+
 class OperationName(models.Model):
     name = models.CharField(max_length=255)
+    OPERATION_TYPES = [
+        ('plus', 'Plus'),
+        ('minus', 'Minus'),
+    ]
+
+    type = models.CharField(
+        max_length=5,
+        choices=OPERATION_TYPES,
+        default='plus',
+    )
 
     class Meta:
         db_table = "OperationName"
@@ -23,6 +28,7 @@ class OperationName(models.Model):
 
 class PaymentMethods(models.Model):
     name = models.CharField(max_length=32)
+
 
     class Meta:
         db_table = "payment_methods"
@@ -46,6 +52,7 @@ class Sale(models.Model):
     date = models.DateTimeField(auto_now_add=True,)
     update_date = models.DateTimeField(auto_now_add=True,)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, null=True)
+    # user = models.CharField(max_length=32, default='admin')
     total = models.DecimalField(max_digits=15, decimal_places=2, validators=[validators.MinValueValidator(0)])
     payment = models.ForeignKey(PaymentMethods, on_delete=models.PROTECT, null=True)
     notice = models.TextField(null=True)
