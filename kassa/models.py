@@ -22,6 +22,8 @@ class OperationName(models.Model):
 
     class Meta:
         db_table = "OperationName"
+        verbose_name = 'Имя операции'
+        verbose_name_plural = 'Имена операций'
 
     def __str__(self):
          return f"{self.name}"

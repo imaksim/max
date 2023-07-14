@@ -5,23 +5,50 @@
 {% block content %}
 <form method="POST" action="{% url 'add_sale' %}">
     {% csrf_token %}
-    {{ form.as_p }}
-
-	{{ formset.management_form }}
-    <div id="form-set">
-        {% for form in formset %}
-            <div class="form-group">
-                {{ form.as_p }}
-            </div>
-        {% endfor %}
+    <div>
+        <label>{{ form.notice.label }}</label>
+        {{ form.notice }}
+        {% if form.notice.errors %}
+            <div class="errors">{{ form.notice.errors }}</div>
+        {% endif %}
     </div>
-    <button type="button" id="add-form">+</button>
-    <button type="submit">Submit</button>
+	<div>
+        <label>{{ form.total.label }}</label>
+        {{ form.total }}
+        {% if form.total.errors %}
+            <div class="errors">{{ form.total.errors }}</div>
+        {% endif %}
+    </div>
+	<div>
+        <label>{{ form.payment.label }}</label>
+        {{ form.payment }}
+        {% if form.payment.errors %}
+            <div class="errors">{{ form.payment.errors }}</div>
+        {% endif %}
+    </div>
+
+<!--	{{ formset.management_form }}-->
+<!--        <table id="form-set">-->
+<!--        {% for form in formset %}-->
+<!--            <tr class="form-group">-->
+<!--                {% for field in form %}-->
+<!--                <td>-->
+<!--                    {{ field.errors }}-->
+<!--                    {{ field.label_tag }} {{ field }}-->
+<!--                </td>-->
+<!--                {% endfor %}-->
+            </tr>
+        {% endfor %}
+    </table>
+
+
 </form>
 
 
-
+	<form method="POST" action="{% url 'add_sale' %}">
+		{% csrf_token %}
     <div class="container-fluid">
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="page-header">
@@ -54,6 +81,7 @@
 
 		</div>
 	</div>
+
 	<div class="row">
 		<div class="col-md-1">
 			<h3>
@@ -97,58 +125,38 @@
 						</th>
 					</tr>
 				</thead>
+				{{ formset.management_form }}
 				<tbody>
-					<tr>
+				{% for form in formset %}
+					<tr class="form-group">
 						<td>
 							1
 						</td>
 						<td>
-							Роза 70 см
+
+        {{ form.operation_name }}
+        {% if form.operation_name.errors %}
+            <div class="errors">{{ form.operation_name.errors }}</div>
+        {% endif %}
+
 						</td>
 						<td>
-							2
+							{{ form.amount }}
+        {% if form.amount.errors %}
+            <div class="errors">{{ form.amount.errors }}</div>
+        {% endif %}
 						</td>
 						<td>
-							100
+							{{ form.price }}
+        {% if form.price.errors %}
+            <div class="errors">{{ form.price.errors }}</div>
+        {% endif %}
 						</td>
 						<td>
 							200
 						</td>
 					</tr>
-					<tr class="table-active">
-						<<td>
-							2
-						</td>
-						<td>
-							Роза 50 см
-						</td>
-						<td>
-							3
-						</td>
-						<td>
-							100
-						</td>
-						<td>
-							300
-						</td>
-					</tr>
-					<tr>
-						<td>
-							3
-						</td>
-						<td>
-							Выдача наличных
-						</td>
-						<td>
-							1
-						</td>
-						<td>
-							300
-						</td>
-						<td>
-							- 300
-						</td>
-					</tr>
+				{% endfor %}
 				</tbody>
 			</table>
 			<div class="row">
@@ -161,41 +169,11 @@
 		</div>
 	</div>
 </div>
+		<button type="button" id="add-form">+</button>
+    <button type="submit">Submit</button>
+		</form>
 <script>
-jQuery(document).ready(function($) {
-$(document).ready(function() {
-    var totalForms = parseInt($('#id_form-TOTAL_FORMS').val());
-    var maxForms = parseInt($('#id_form-MAX_NUM_FORMS').val());
-    var addButton = $('#add-form');
 
-    function checkTotalForms() {
-        if (totalForms >= maxForms) {
-            addButton.prop('disabled', true);
-        } else {
-            addButton.prop('disabled', false);
-        }
-    }
-
-    checkTotalForms();
-
-    addButton.click(function() {
-        var newForm = $($('.form-group')[0]).clone(true);
-        newForm.find(':input').each(function() {
-            var name = $(this).attr('name').replace('-0-', '-' + totalForms + '-');
-            var id = 'id_' + name;
-            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
-        });
-        newForm.find('label').each(function() {
-            var newFor = $(this).attr('for').replace('-0-', '-' + totalForms + '-');
-            $(this).attr('for', newFor);
-        });
-        newForm.insertBefore(addButton);
-        totalForms++;
-        $('#id_form-TOTAL_FORMS').val(totalForms);
-        checkTotalForms();
-    });
-});
-});
 </script>
 {% endblock content %}
 ```
